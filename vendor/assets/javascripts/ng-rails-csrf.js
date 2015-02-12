@@ -14,10 +14,14 @@ angular.module('ng-rails-csrf', [] ).config(['$httpProvider', function($httpProv
         return el;
     };
     var updateToken = function() {
-        var headers = $httpProvider.defaults.headers.common, token = getToken();
+        var headers = $httpProvider.defaults.headers, token = getToken();
         if (token) {
-            headers['X-CSRF-TOKEN'] = getToken;
-            headers['X-Requested-With'] = 'XMLHttpRequest';
+            var methods = ['get', 'post', 'put'];
+            for (var i = 0; i < methods.size; i++)
+            {
+                headers[methods[i]]['X-CSRF-TOKEN'] = getToken;
+                headers[methods[i]]['X-Requested-With'] = 'XMLHttpRequest';
+            }
         }
     };
     updateToken();
