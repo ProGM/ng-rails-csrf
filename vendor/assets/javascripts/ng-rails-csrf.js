@@ -1,4 +1,4 @@
-angular.module('ng-rails-csrf', [] ).config(['$httpProvider', function($httpProvider) {
+angular.module('ng-rails-csrf', []).config(['$httpProvider', function($httpProvider) {
     var getToken = function() {
         // Rails 3+
         var el = document.querySelector('meta[name="csrf-token"]');
@@ -16,12 +16,15 @@ angular.module('ng-rails-csrf', [] ).config(['$httpProvider', function($httpProv
     var updateToken = function() {
         var headers = $httpProvider.defaults.headers, token = getToken();
         if (token) {
-            var methods = ['get', 'post', 'put'];
-            for (var i = 0; i < methods.size; i++)
+            var methods = ['get', 'post', 'put', 'patch'];
+            for (var i = 0; i < methods.length; i++)
             {
+                if (!headers[methods[i]])
+                    headers[methods[i]] = {};
                 headers[methods[i]]['X-CSRF-TOKEN'] = getToken;
                 headers[methods[i]]['X-Requested-With'] = 'XMLHttpRequest';
             }
+            console.log(headers);
         }
     };
     updateToken();
