@@ -16,7 +16,7 @@ angular.module('ng-rails-csrf', []).config(['$httpProvider', function($httpProvi
     var updateToken = function() {
         var headers = $httpProvider.defaults.headers, token = getToken();
         if (token) {
-            var methods = ['get', 'post', 'put', 'patch'];
+            var methods = ['post', 'put', 'patch'];
             for (var i = 0; i < methods.length; i++)
             {
                 if (!headers[methods[i]])
@@ -24,7 +24,6 @@ angular.module('ng-rails-csrf', []).config(['$httpProvider', function($httpProvi
                 headers[methods[i]]['X-CSRF-TOKEN'] = getToken;
                 headers[methods[i]]['X-Requested-With'] = 'XMLHttpRequest';
             }
-            console.log(headers);
         }
     };
     updateToken();
